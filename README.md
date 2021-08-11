@@ -10,7 +10,7 @@
 
 If using the asset pipeline to manage JavaScript, the last command will:
 
-- Append import "@rails/request.js" to your app/assets/javascripts/application.js entrypoint.
+- Append `import "@rails/request.js"` to your `app/assets/javascripts/application.js` entrypoint.
 
 Make sure you've already installed `importmap-rails` and that it's referenced before `requestjs-rails` in your Gemfile.
 
