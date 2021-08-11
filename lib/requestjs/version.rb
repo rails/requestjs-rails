@@ -1,3 +1,3 @@
 module Requestjs
-  VERSION = "0.0.5"
+  VERSION = ""
 end
