@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+VERSION=$1
+
+printf "module Requestjs\n  VERSION = \"$VERSION\"\nend\n" > ./lib/requestjs/version.rb
+bundle
+git add Gemfile.lock lib/requestjs/version.rb
+git commit -m "Bump version for $VERSION"
+git push
+git tag v$VERSION
+git push --tags
+gem build requestjs-rails.gemspec
+gem push "requestjs-rails-$VERSION.gem"
