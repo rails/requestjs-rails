@@ -1,4 +1,4 @@
-module RequestJS
+module Requestjs
   class Engine < ::Rails::Engine
     initializer "stimulus.assets" do
       if Rails.application.config.respond_to?(:assets)

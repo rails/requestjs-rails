@@ -1,8 +1,8 @@
-require_relative "lib/request_js/version"
+require_relative "lib/requestjs/version"
 
 Gem::Specification.new do |s|
   s.name     = "request.js-rails"
-  s.version  = RequestJS::VERSION
+  s.version  = Requestjs::VERSION
   s.authors  = ["Marcelo Lauxen"]
   s.email    = "marcelolauxen16@gmail.com"
   s.summary  = "A tiny Fetch API wrapper that allows you to make http requests without need to handle to send the CSRF Token on every request"
