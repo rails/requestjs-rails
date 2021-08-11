@@ -1,7 +1,7 @@
 require_relative "lib/requestjs/version"
 
 Gem::Specification.new do |s|
-  s.name     = "request.js-rails"
+  s.name     = "requestjs-rails"
   s.version  = Requestjs::VERSION
   s.authors  = ["Marcelo Lauxen"]
   s.email    = "marcelolauxen16@gmail.com"
