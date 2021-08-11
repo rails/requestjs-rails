@@ -9,7 +9,6 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/marcelolx/request.js-rails"
   s.license  = "MIT"
 
-  s.required_ruby_version = ">= 2.6.0"
   s.add_dependency "rails", ">= 6.0.0"
 
   s.files = Dir["{app,config,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
