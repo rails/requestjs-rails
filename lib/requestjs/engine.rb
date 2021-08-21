@@ -8,8 +8,8 @@ module Requestjs
 
     initializer "requestjs.importmap" do
       if Rails.application.config.respond_to?(:importmap)
-        Rails.application.config.importmap.paths.tap do |paths|
-          paths.asset "@rails/request.js", path: "rails-requestjs"
+        Rails.application.config.importmap.draw do
+          pin "@rails/request.js", to: "rails-requestjs"
         end
       end
     end
