@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    requestjs-rails (0.0.5)
+    requestjs-rails (0.0.6)
       rails (>= 6.0.0)
 
 GEM
