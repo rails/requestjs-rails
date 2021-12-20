@@ -14,6 +14,9 @@ class FetchResponse {
   get unauthenticated() {
     return this.statusCode === 401;
   }
+  get unprocessableEntity() {
+    return this.statusCode === 422;
+  }
   get authenticationURL() {
     return this.response.headers.get("WWW-Authenticate");
   }
@@ -31,7 +34,7 @@ class FetchResponse {
     return Promise.reject(new Error(`Expected an HTML response but got "${this.contentType}" instead`));
   }
   get json() {
-    if (this.contentType.match(/^application\/json/)) {
+    if (this.contentType.match(/^application\/.*json$/)) {
       return this.responseJson || (this.responseJson = this.response.json());
     }
     return Promise.reject(new Error(`Expected a JSON response but got "${this.contentType}" instead`));
@@ -45,7 +48,7 @@ class FetchResponse {
   async renderTurboStream() {
     if (this.isTurboStream) {
       if (window.Turbo) {
-        window.Turbo.renderStreamMessage(await this.text);
+        await window.Turbo.renderStreamMessage(await this.text);
       } else {
         console.warn("You must set `window.Turbo = Turbo` to automatically process Turbo Stream events with request.js");
       }
@@ -115,7 +118,7 @@ class FetchRequest {
   constructor(method, url, options = {}) {
     this.method = method;
     this.options = options;
-    this.originalUrl = url;
+    this.originalUrl = url.toString();
   }
   async perform() {
     try {
@@ -131,7 +134,7 @@ class FetchRequest {
       return Promise.reject(window.location.href = response.authenticationURL);
     }
     if (response.ok && response.isTurboStream) {
-      response.renderTurboStream();
+      await response.renderTurboStream();
     }
     return response;
   }
@@ -180,7 +183,7 @@ class FetchRequest {
       return "text/vnd.turbo-stream.html, text/html, application/xhtml+xml";
 
      case "json":
-      return "application/json";
+      return "application/json, application/vnd.api+json";
 
      default:
       return "*/*";
@@ -205,7 +208,7 @@ class FetchRequest {
     return query.length > 0 ? `?${query}` : "";
   }
   get url() {
-    return this.originalUrl.split("?")[0] + this.query;
+    return this.originalUrl.split("?")[0].split("#")[0] + this.query;
   }
   get responseKind() {
     return this.options.responseKind || "html";
