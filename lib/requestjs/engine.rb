@@ -9,7 +9,7 @@ module Requestjs
     initializer "requestjs.importmap" do
       if Rails.application.respond_to?(:importmap)
         Rails.application.importmap.draw do
-          pin "@rails/request.js", to: "rails-requestjs"
+          pin "@rails/requestjs", to: "requestjs.js"
         end
       end
     end
