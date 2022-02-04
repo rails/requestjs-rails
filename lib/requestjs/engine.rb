@@ -7,7 +7,9 @@ module Requestjs
     end
 
     initializer "requestjs.importmap", before: "importmap" do |app|
-      app.config.importmap.paths << Engine.root.join("config/importmap.rb")
+      if Rails.application.respond_to?(:importmap)
+        app.config.importmap.paths << Engine.root.join("config/importmap.rb")
+      end
     end
   end
 end
