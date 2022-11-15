@@ -105,7 +105,7 @@ function stringEntriesFromFormData(formData) {
 function mergeEntries(searchParams, entries) {
   for (const [name, value] of entries) {
     if (value instanceof window.File) continue;
-    if (searchParams.has(name)) {
+    if (searchParams.has(name) && !name.includes("[]")) {
       searchParams.delete(name);
       searchParams.set(name, value);
     } else {
@@ -143,6 +143,16 @@ class FetchRequest {
     headers[key] = value;
     this.options.headers = headers;
   }
+  sameHostname() {
+    if (!this.originalUrl.startsWith("http:")) {
+      return true;
+    }
+    try {
+      return new URL(this.originalUrl).hostname === window.location.hostname;
+    } catch (_) {
+      return true;
+    }
+  }
   get fetchOptions() {
     return {
       method: this.method.toUpperCase(),
@@ -154,12 +164,15 @@ class FetchRequest {
     };
   }
   get headers() {
-    return compact(Object.assign({
+    const baseHeaders = {
       "X-Requested-With": "XMLHttpRequest",
-      "X-CSRF-Token": this.csrfToken,
       "Content-Type": this.contentType,
       Accept: this.accept
-    }, this.additionalHeaders));
+    };
+    if (this.sameHostname()) {
+      baseHeaders["X-CSRF-Token"] = this.csrfToken;
+    }
+    return compact(Object.assign(baseHeaders, this.additionalHeaders));
   }
   get csrfToken() {
     return getCookie(metaContent("csrf-param")) || metaContent("csrf-token");

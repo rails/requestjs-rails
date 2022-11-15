@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    requestjs-rails (0.0.9)
+    requestjs-rails (0.0.10)
       rails (>= 6.0.0)
 
 GEM
@@ -140,4 +140,4 @@ DEPENDENCIES
   requestjs-rails!
 
 BUNDLED WITH
-   2.2.19
+   2.3.22
