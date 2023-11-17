@@ -37,6 +37,8 @@ GEM
       nokogiri (>= 1.5.9)
     method_source (1.0.0)
     minitest (5.14.4)
+    nokogiri (1.12.3-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.12.3-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.12.3-x86_64-linux)
@@ -63,6 +65,7 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
+  arm64-darwin-21
   x86_64-darwin-18
   x86_64-linux
 
