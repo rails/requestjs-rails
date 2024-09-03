@@ -45,6 +45,9 @@ class FetchResponse {
   get isTurboStream() {
     return this.contentType.match(/^text\/vnd\.turbo-stream\.html/);
   }
+  get isScript() {
+    return this.contentType.match(/\b(?:java|ecma)script\b/);
+  }
   async renderTurboStream() {
     if (this.isTurboStream) {
       if (window.Turbo) {
@@ -54,6 +57,20 @@ class FetchResponse {
       }
     } else {
       return Promise.reject(new Error(`Expected a Turbo Stream response but got "${this.contentType}" instead`));
+    }
+  }
+  async activeScript() {
+    if (this.isScript) {
+      const script = document.createElement("script");
+      const metaTag = document.querySelector("meta[name=csp-nonce]");
+      const nonce = metaTag && metaTag.content;
+      if (nonce) {
+        script.setAttribute("nonce", nonce);
+      }
+      script.innerHTML = await this.text;
+      document.body.appendChild(script);
+    } else {
+      return Promise.reject(new Error(`Expected a Script response but got "${this.contentType}" instead`));
     }
   }
 }
@@ -129,9 +146,13 @@ class FetchRequest {
     } catch (error) {
       console.error(error);
     }
-    const response = new FetchResponse(await window.fetch(this.url, this.fetchOptions));
+    const fetch = this.responseKind === "turbo-stream" && window.Turbo ? window.Turbo.fetch : window.fetch;
+    const response = new FetchResponse(await fetch(this.url, this.fetchOptions));
     if (response.unauthenticated && response.authenticationURL) {
       return Promise.reject(window.location.href = response.authenticationURL);
+    }
+    if (response.isScript) {
+      await response.activeScript();
     }
     const responseStatusIsTurboStreamable = response.ok || response.unprocessableEntity;
     if (responseStatusIsTurboStreamable && response.isTurboStream) {
@@ -198,6 +219,9 @@ class FetchRequest {
 
      case "json":
       return "application/json, application/vnd.api+json";
+
+     case "script":
+      return "text/javascript, application/javascript";
 
      default:
       return "*/*";
