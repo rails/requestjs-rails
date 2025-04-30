@@ -63,9 +63,11 @@ class FetchResponse {
     if (this.isScript) {
       const script = document.createElement("script");
       const metaTag = document.querySelector("meta[name=csp-nonce]");
-      const nonce = metaTag && metaTag.content;
-      if (nonce) {
-        script.setAttribute("nonce", nonce);
+      if (metaTag) {
+        const nonce = metaTag.nonce === "" ? metaTag.content : metaTag.nonce;
+        if (nonce) {
+          script.setAttribute("nonce", nonce);
+        }
       }
       script.innerHTML = await this.text;
       document.body.appendChild(script);
@@ -166,7 +168,7 @@ class FetchRequest {
     this.options.headers = headers;
   }
   sameHostname() {
-    if (!this.originalUrl.startsWith("http:")) {
+    if (!this.originalUrl.startsWith("http:") && !this.originalUrl.startsWith("https:")) {
       return true;
     }
     try {
@@ -182,7 +184,8 @@ class FetchRequest {
       body: this.formattedBody,
       signal: this.signal,
       credentials: this.credentials,
-      redirect: this.redirect
+      redirect: this.redirect,
+      keepalive: this.keepalive
     };
   }
   get headers() {
@@ -259,6 +262,9 @@ class FetchRequest {
   }
   get credentials() {
     return this.options.credentials || "same-origin";
+  }
+  get keepalive() {
+    return this.options.keepalive || false;
   }
   get additionalHeaders() {
     return this.options.headers || {};
