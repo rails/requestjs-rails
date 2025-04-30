@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    requestjs-rails (0.0.12)
+    requestjs-rails (0.0.13)
       railties (>= 7.1.0)
 
 GEM
