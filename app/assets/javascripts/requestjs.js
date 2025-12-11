@@ -148,7 +148,7 @@ class FetchRequest {
     } catch (error) {
       console.error(error);
     }
-    const fetch = this.responseKind === "turbo-stream" && window.Turbo ? window.Turbo.fetch : window.fetch;
+    const fetch = window.Turbo ? window.Turbo.fetch : window.fetch;
     const response = new FetchResponse(await fetch(this.url, this.fetchOptions));
     if (response.unauthenticated && response.authenticationURL) {
       return Promise.reject(window.location.href = response.authenticationURL);
