@@ -1,6 +1,9 @@
 # Request.JS for Rails
 
-[Rails Request.JS](https://github.com/rails/request.js) encapsulates the logic to send by default some headers that are required by rails applications like the `X-CSRF-Token`.
+[@rails/request.js](https://github.com/rails/request.js) encapsulates the logic to send by default some headers that are required by rails applications like the `X-CSRF-Token`.
+
+> [!NOTE]
+> Source code for the NPM package can be found at [@rails/request.js](https://github.com/rails/request.js).
 
 ## Installation
 
@@ -20,7 +23,7 @@ If using Webpacker to manage JavaScript, the last command will:
 
 ## Usage
 
-With the installation done check the documentation in the [Rails Request.JS](https://github.com/rails/request.js#how-to-use) repository.
+With the installation done check the documentation in the [@rails/request.js](https://github.com/rails/request.js#how-to-use) repository.
 
 ## License
 
